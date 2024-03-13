@@ -37,7 +37,11 @@ const init = async() => {
 
   console.log(await fetchUserTalents(reggie.id));
 
-  await destroyUserTalent(reggieSurfs);
+  // test that this errors -- otto doesn't skate
+  // await destroyUserTalent( { user_id: otto.id, id: reggieSkates.id});
+
+  await destroyUserTalent(reggieSurfs); 
+
   console.log(await fetchUserTalents(reggie.id));
 
 };

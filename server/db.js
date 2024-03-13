@@ -83,6 +83,7 @@ const fetchTalents = async() => {
   return response.rows;
 }
 
+// FETCH USER TALENTS
 const fetchUserTalents = async(user_id) => {
   const SQL = `
     SELECT *
@@ -93,10 +94,11 @@ const fetchUserTalents = async(user_id) => {
   return response.rows;
 }
 
+// DESTROY USER TALENT
 const destroyUserTalent = async({ user_id, id }) => {
   const SQL = `
     DELETE FROM user_talents
-    WHERE user_id = $1 AND user_id = $2
+    WHERE id = $1 AND user_id = $2
     RETURNING *
   `;
   const response = await client.query(SQL, [id, user_id])
@@ -107,6 +109,7 @@ const destroyUserTalent = async({ user_id, id }) => {
   }
 }
 
+// MODULE EXPORTS
 module.exports = {
   client,
   createTables,
