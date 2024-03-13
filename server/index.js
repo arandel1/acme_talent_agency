@@ -3,8 +3,11 @@ const {
   createTables,
   createUser,
   createTalent,
+  createUserTalent,
   fetchUsers,
-  fetchTalents
+  fetchTalents,
+  fetchUserTalents,
+  destroyUserTalent
    } = require('./db');
 
 const init = async() => {
@@ -26,6 +29,16 @@ const init = async() => {
   ]);
   console.log(await fetchUsers());
   console.log(await fetchTalents());
+
+  const [reggieSurfs, reggieSkates] = await Promise.all([
+    createUserTalent({ user_id: reggie.id, talent_id: surfing.id}),
+    createUserTalent({ user_id: reggie.id, talent_id: skating.id}),
+  ]);
+
+  console.log(await fetchUserTalents(reggie.id));
+
+  await destroyUserTalent(reggieSurfs);
+  console.log(await fetchUserTalents(reggie.id));
 
 };
 
