@@ -103,6 +103,7 @@ const init = async() => {
 
   console.log(await fetchUserTalents(reggie.id));
 
+  // CURL COMMANDS AND ASSISTS 
   const port = process.env.PORT || 3000;
   app.listen(port, () => {
     console.log(`listening on port: ${port}`);
