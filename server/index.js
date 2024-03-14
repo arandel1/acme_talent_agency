@@ -8,10 +8,12 @@ const {
   fetchTalents,
   fetchUserTalents,
   destroyUserTalent
-   } = require('./db');
+} = require('./db');
 
 const express = require('express');
 const app = express();
+
+app.use(express.json());
 
 app.get('/api/talents', async(req, res, next) => {
   try {
@@ -38,6 +40,31 @@ app.get('/api/users/:id/userTalents', async(req, res, next) => {
   catch(ex){
     next(ex);
   }
+});
+
+app.delete('/api/users/:userId/userTalents', async(req, res, next) => {
+  try {
+    await destroyUserTalent({ user_id: req.params.userId, id: req.params.id})
+    res.sendStatus(204)
+  }
+  catch(ex){
+    next(ex);
+  }
+});
+
+app.post('/api/users/:userId/userTalents', async(req, res, next) => {
+  try {
+    const userTalent = await createUserTalent({ user_id: req.params.userId, talent_id: req.body.talent_id})
+    res.status(201).send(userTalent);
+  }
+  catch(ex){
+    next(ex);
+  }
+});
+
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.status(err.status || 500).send({ error: err.message || err})
 });
 
 
@@ -82,6 +109,8 @@ const init = async() => {
     console.log(`curl localhost:${port}/api/talents`)
     console.log(`curl localhost:${port}/api/users`)
     console.log(`curl localhost:${port}/api/users/${reggie.id}/userTalents`)
+    console.log(`curl -X DELETE localhost:${port}/api/users/${reggie.id}/userTalents/${reggieSkates.id}`)
+    console.log(`curl -X POST localhost:${port}/api/users/${tito.id}/userTalents/ -d '{"talent_id": "${cooking.id}"}' -H "Content-Type:application/json"`);
 
   })
 
